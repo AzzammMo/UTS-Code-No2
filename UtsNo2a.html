@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aplikasi Penghitung Luas</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+    <style>
+        /* Tambahan gaya untuk mempercantik tampilan */
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f0f0;
+        }
+        .btn {
+            padding: 10px 20px;
+            font-size: 16px;
+            color: white;
+            background-color: #007bff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <button class="btn" onclick="showMenu()">Mulai Aplikasi Penghitung Luas</button>
+
+    <!-- Tambahkan script SweetAlert2 -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        function showMenu() {
+            Swal.fire({
+                title: 'APLIKASI PENGHITUNG LUAS',
+                text: 'Pilih opsi perhitungan yang Anda butuhkan:',
+                icon: 'info',
+                showCancelButton: true,
+                confirmButtonText: 'Lanjut',
+                cancelButtonText: 'Keluar',
+                input: 'select',
+                inputOptions: {
+                    1: 'Hitung Luas Lingkaran',
+                    2: 'Hitung Luas Persegi Panjang',
+                    3: 'Hitung Luas Permukaan Tabung'
+                },
+                inputPlaceholder: 'Pilih perhitungan',
+                inputValidator: (value) => {
+                    if (!value) {
+                        return 'Anda perlu memilih salah satu opsi!'
+                    }
+                }
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    const pilihan = result.value;
+                    switch (pilihan) {
+                        case '1':
+                            inputJariJari();
+                            break;
+                        case '2':
+                            inputPanjangLebar();
+                            break;
+                        case '3':
+                            inputTabung();
+                            break;
+                    }
+                }
+            });
+        }
+
+        function inputJariJari() {
+            Swal.fire({
+                title: 'Hitung Luas Lingkaran',
+                input: 'number',
+                inputLabel: 'Masukkan jari-jari lingkaran:',
+                inputPlaceholder: 'Contoh: 5',
+                inputValidator: (value) => {
+                    if (!value || value <= 0) {
+                        return 'Masukkan nilai jari-jari yang valid!';
+                    }
+                }
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    const jariJari = parseFloat(result.value);
+                    const luasLingkaran = 3.14159 * jariJari * jariJari;
+                    Swal.fire(`Luas Lingkaran: ${luasLingkaran.toFixed(2)}`);
+                }
+            });
+        }
+
+        function inputPanjangLebar() {
+            Swal.fire({
+                title: 'Hitung Luas Persegi Panjang',
+                html:
+                    '<input id="panjang" class="swal2-input" placeholder="Masukkan panjang">' +
+                    '<input id="lebar" class="swal2-input" placeholder="Masukkan lebar">',
+                focusConfirm: false,
+                preConfirm: () => {
+                    const panjang = parseFloat(document.getElementById('panjang').value);
+                    const lebar = parseFloat(document.getElementById('lebar').value);
+                    if (!panjang || !lebar || panjang <= 0 || lebar <= 0) {
+                        Swal.showValidationMessage('Masukkan nilai panjang dan lebar yang valid!');
+                        return false;
+                    }
+                    const luasPersegiPanjang = panjang * lebar;
+                    Swal.fire(`Luas Persegi Panjang: ${luasPersegiPanjang.toFixed(2)}`);
+                }
+            });
+        }
+
+        function inputTabung() {
+            Swal.fire({
+                title: 'Hitung Luas Permukaan Tabung',
+                html:
+                    '<input id="jariJariTabung" class="swal2-input" placeholder="Masukkan jari-jari">' +
+                    '<input id="tinggiTabung" class="swal2-input" placeholder="Masukkan tinggi">',
+                focusConfirm: false,
+                preConfirm: () => {
+                    const jariJari = parseFloat(document.getElementById('jariJariTabung').value);
+                    const tinggi = parseFloat(document.getElementById('tinggiTabung').value);
+                    if (!jariJari || !tinggi || jariJari <= 0 || tinggi <= 0) {
+                        Swal.showValidationMessage('Masukkan nilai jari-jari dan tinggi yang valid!');
+                        return false;
+                    }
+                    const luasLingkaran = 3.14159 * jariJari * jariJari;
+                    const luasSelimut = 2 * 3.14159 * jariJari * tinggi;
+                    const luasPermukaanTabung = 2 * luasLingkaran + luasSelimut;
+                    Swal.fire(`Luas Permukaan Tabung: ${luasPermukaanTabung.toFixed(2)}`);
+                }
+            });
+        }
+    </script>
+</body>
+</html>
